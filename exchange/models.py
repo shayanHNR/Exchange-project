@@ -77,3 +77,29 @@ class Transaction(models.Model):
         verbose_name_plural = "معاملات" 
     def __str__(self):
         return f"{self.customer} - {self.transaction_type}"
+    
+class Receipt(models.Model):
+    transaction = models.ForeignKey(
+        Transaction,
+        on_delete=models.CASCADE,
+        related_name='receipts'
+    )
+
+    file = models.FileField(
+        upload_to='receipts/'
+    )
+
+    description = models.TextField(
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "رسید"
+        verbose_name_plural = "رسیدها"
+
+    def __str__(self):
+        return f"رسید {self.transaction}"
