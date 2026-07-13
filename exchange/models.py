@@ -173,3 +173,33 @@ class WalletBalance(models.Model):
 
     def __str__(self):
         return f"{self.wallet} - {self.currency}"
+class AccountLedger(models.Model):
+    customer = models.ForeignKey(
+        Customer,
+        on_delete=models.CASCADE
+    )
+
+    currency = models.ForeignKey(
+        Currency,
+        on_delete=models.CASCADE
+    )
+
+    amount = models.DecimalField(
+        max_digits=20,
+        decimal_places=2
+    )
+
+    description = models.TextField(
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "گردش حساب"
+        verbose_name_plural = "گردش حساب‌ها"
+
+    def __str__(self):
+        return f"{self.customer} - {self.amount}"
