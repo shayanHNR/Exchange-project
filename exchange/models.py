@@ -5,6 +5,9 @@ class Customer(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = "مشتری"
+        verbose_name_plural = "مشتریان"
 
     def __str__(self):
         return self.name
@@ -12,7 +15,9 @@ class Customer(models.Model):
 class Currency(models.Model):
     name = models.CharField(max_length=50)
     code = models.CharField(max_length=10)
-
+    class Meta:
+        verbose_name = "ارز"
+        verbose_name_plural = "ارزها"
     def __str__(self):
         return self.name
     
@@ -67,6 +72,8 @@ class Transaction(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True
     )
-
+    class Meta:
+        verbose_name = "معامله"
+        verbose_name_plural = "معاملات" 
     def __str__(self):
         return f"{self.customer} - {self.transaction_type}"
