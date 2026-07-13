@@ -3,7 +3,18 @@ from .models import Customer, Currency, Transaction, Receipt, Custody, Wallet, W
 
 admin.site.register(Customer)
 admin.site.register(Currency)
-admin.site.register(Transaction)
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = (
+        'customer',
+        'transaction_type',
+        'from_currency',
+        'to_currency',
+        'amount',
+        'from_wallet',
+        'to_wallet',
+        'created_at',
+    )
 admin.site.register(Receipt)
 admin.site.register(Custody)
 admin.site.register(Wallet)

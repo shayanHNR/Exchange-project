@@ -1,10 +1,22 @@
 from django.db import models
 
 class Customer(models.Model):
-    name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=20, blank=True)
-    description = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(
+        "نام مشتری",
+        max_length=100
+    )
+
+    phone = models.CharField(
+        "شماره تماس",
+        max_length=20,
+        blank=True
+    )
+
+    description = models.TextField(
+        "توضیحات",
+        blank=True
+    )
+
     class Meta:
         verbose_name = "مشتری"
         verbose_name_plural = "مشتریان"
@@ -13,11 +25,20 @@ class Customer(models.Model):
         return self.name
 
 class Currency(models.Model):
-    name = models.CharField(max_length=50)
-    code = models.CharField(max_length=10)
+    name = models.CharField(
+        "نام ارز",
+        max_length=50
+    )
+
+    code = models.CharField(
+        "کد ارز",
+        max_length=10
+    )
+
     class Meta:
         verbose_name = "ارز"
         verbose_name_plural = "ارزها"
+
     def __str__(self):
         return self.name
     
@@ -30,10 +51,29 @@ class Transaction(models.Model):
 
     customer = models.ForeignKey(
         Customer,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='مشتری'
+    )
+    from_wallet = models.ForeignKey(
+        'Wallet',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='outgoing_transactions',
+        verbose_name='کیف پول مبدا'
+    )
+
+    to_wallet = models.ForeignKey(
+        'Wallet',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='incoming_transactions',
+        verbose_name='کیف پول مقصد'
     )
 
     transaction_type = models.CharField(
+        'نوع معامله',
         max_length=20,
         choices=TRANSACTION_TYPES
     )
@@ -41,26 +81,31 @@ class Transaction(models.Model):
     from_currency = models.ForeignKey(
         Currency,
         on_delete=models.CASCADE,
-        related_name='from_transactions'
+        related_name='from_transactions',
+        verbose_name='ارز مبدا'
     )
 
     to_currency = models.ForeignKey(
         Currency,
         on_delete=models.CASCADE,
-        related_name='to_transactions'
+        related_name='to_transactions',
+        verbose_name='ارز مقصد'
     )
 
     amount = models.DecimalField(
+        'مبلغ',
         max_digits=15,
         decimal_places=2
     )
 
     rate = models.DecimalField(
+        'نرخ',
         max_digits=15,
         decimal_places=2
     )
 
     tracking_number = models.CharField(
+        'شماره معامله',
         max_length=100,
         unique=True
     )
@@ -82,18 +127,23 @@ class Receipt(models.Model):
     transaction = models.ForeignKey(
         Transaction,
         on_delete=models.CASCADE,
-        related_name='receipts'
+        related_name='receipts',
+        verbose_name='معامله'
     )
 
     file = models.FileField(
+        'فایل رسید',
         upload_to='receipts/'
+
     )
 
     description = models.TextField(
+        'توضیحات',
         blank=True
     )
 
     created_at = models.DateTimeField(
+        'تاریخ ثبت',
         auto_now_add=True
     )
 
@@ -106,24 +156,29 @@ class Receipt(models.Model):
 class Custody(models.Model):
     customer = models.ForeignKey(
         Customer,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='مشتری'
     )
 
     currency = models.ForeignKey(
         Currency,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='ارز'
     )
 
     amount = models.DecimalField(
+        'مقدار',
         max_digits=15,
         decimal_places=2
     )
 
     description = models.TextField(
+        'توضیحات',
         blank=True
     )
 
     created_at = models.DateTimeField(
+        'تاریخ ثبت',
         auto_now_add=True
     )
 
@@ -134,13 +189,15 @@ class Custody(models.Model):
     def __str__(self):
         return f"{self.customer} - {self.amount}"
 class Wallet(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField('نام کیف پول',max_length=100)
 
     description = models.TextField(
+        'توضیحات',
         blank=True
     )
 
     created_at = models.DateTimeField(
+        'تاریخ ثبت',
         auto_now_add=True
     )
 
@@ -153,15 +210,18 @@ class Wallet(models.Model):
 class WalletBalance(models.Model):
     wallet = models.ForeignKey(
         Wallet,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='کیف پول'
     )
 
     currency = models.ForeignKey(
         Currency,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='ارز'
     )
 
     amount = models.DecimalField(
+        'موجودی',
         max_digits=20,
         decimal_places=2,
         default=0
@@ -176,24 +236,29 @@ class WalletBalance(models.Model):
 class AccountLedger(models.Model):
     customer = models.ForeignKey(
         Customer,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='مشتری'
     )
 
     currency = models.ForeignKey(
         Currency,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='ارز'
     )
 
     amount = models.DecimalField(
+        'مبلغ',
         max_digits=20,
         decimal_places=2
     )
 
     description = models.TextField(
+        'توضیحات',
         blank=True
     )
 
     created_at = models.DateTimeField(
+        'تاریخ ثبت',
         auto_now_add=True
     )
 
