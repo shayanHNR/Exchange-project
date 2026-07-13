@@ -133,3 +133,43 @@ class Custody(models.Model):
 
     def __str__(self):
         return f"{self.customer} - {self.amount}"
+class Wallet(models.Model):
+    name = models.CharField(max_length=100)
+
+    description = models.TextField(
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "کیف پول"
+        verbose_name_plural = "کیف پول‌ها"
+
+    def __str__(self):
+        return self.name
+class WalletBalance(models.Model):
+    wallet = models.ForeignKey(
+        Wallet,
+        on_delete=models.CASCADE
+    )
+
+    currency = models.ForeignKey(
+        Currency,
+        on_delete=models.CASCADE
+    )
+
+    amount = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=0
+    )
+
+    class Meta:
+        verbose_name = "موجودی کیف پول"
+        verbose_name_plural = "موجودی کیف پول‌ها"
+
+    def __str__(self):
+        return f"{self.wallet} - {self.currency}"
