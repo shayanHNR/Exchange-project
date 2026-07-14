@@ -11,6 +11,7 @@ class TransactionAdmin(admin.ModelAdmin):
         'from_currency',
         'to_currency',
         'amount',
+        'destination_amount',
         'from_wallet',
         'to_wallet',
         'created_at',

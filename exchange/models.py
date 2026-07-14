@@ -93,8 +93,14 @@ class Transaction(models.Model):
     )
 
     amount = models.DecimalField(
-        'مبلغ',
+        'مبلغ مبدا',
         max_digits=15,
+        decimal_places=2
+    )
+
+    destination_amount = models.DecimalField(
+        "مبلغ مقصد",
+        max_digits=20,
         decimal_places=2
     )
 
@@ -111,10 +117,12 @@ class Transaction(models.Model):
     )
 
     note = models.TextField(
+        'توضیحات',
         blank=True
     )
 
     created_at = models.DateTimeField(
+        'تاریخ ثبت',
         auto_now_add=True
     )
     class Meta:
