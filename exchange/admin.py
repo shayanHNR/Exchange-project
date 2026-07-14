@@ -19,4 +19,12 @@ admin.site.register(Receipt)
 admin.site.register(Custody)
 admin.site.register(Wallet)
 admin.site.register(WalletBalance)
-admin.site.register(AccountLedger)
+@admin.register(AccountLedger)
+class AccountLedgerAdmin(admin.ModelAdmin):
+    list_display = (
+        'customer',
+        'currency',
+        'amount',
+        'entry_type',
+        'created_at',
+    )

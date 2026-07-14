@@ -234,6 +234,15 @@ class WalletBalance(models.Model):
     def __str__(self):
         return f"{self.wallet} - {self.currency}"
 class AccountLedger(models.Model):
+    ENTRY_TYPES = (
+        ('DEBIT', 'بدهکار'),
+        ('CREDIT', 'بستانکار'),
+    )
+    entry_type = models.CharField(
+        "نوع گردش",
+        max_length=10,
+        choices=ENTRY_TYPES
+    )
     customer = models.ForeignKey(
         Customer,
         on_delete=models.CASCADE,
