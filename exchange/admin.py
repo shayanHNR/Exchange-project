@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Customer, Currency, Transaction, Receipt, Custody, Wallet, WalletBalance, AccountLedger
+from .models import Customer, Currency, Transaction, Receipt, Custody, Wallet, WalletBalance, AccountLedger, CustomerBankAccount
 
 admin.site.register(Customer)
 admin.site.register(Currency)
@@ -28,3 +28,4 @@ class AccountLedgerAdmin(admin.ModelAdmin):
         'entry_type',
         'created_at',
     )
+admin.site.register(CustomerBankAccount)

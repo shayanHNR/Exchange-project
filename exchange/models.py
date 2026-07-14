@@ -277,3 +277,57 @@ class AccountLedger(models.Model):
 
     def __str__(self):
         return f"{self.customer} - {self.amount}"
+
+class CustomerBankAccount(models.Model):
+
+    COUNTRIES = (
+        ('IR', 'ایران'),
+        ('TR', 'ترکیه'),
+    )
+
+    customer = models.ForeignKey(
+        Customer,
+        on_delete=models.CASCADE,
+        verbose_name="مشتری"
+    )
+
+    bank_name = models.CharField(
+        "نام بانک",
+        max_length=100
+    )
+
+    card_number = models.CharField(
+        "شماره کارت",
+        max_length=30,
+        blank=True
+    )
+
+    account_number = models.CharField(
+        "شماره حساب",
+        max_length=50,
+        blank=True
+    )
+
+    iban = models.CharField(
+        "شماره شبا",
+        max_length=50,
+        blank=True
+    )
+
+    country = models.CharField(
+        "کشور",
+        max_length=2,
+        choices=COUNTRIES
+    )
+
+    created_at = models.DateTimeField(
+        "تاریخ ثبت",
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "حساب بانکی مشتری"
+        verbose_name_plural = "حساب‌های بانکی مشتریان"
+
+    def __str__(self):
+        return f"{self.customer} - {self.bank_name}"
