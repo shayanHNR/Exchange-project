@@ -246,6 +246,13 @@ class AccountLedger(models.Model):
         ('DEBIT', 'بدهکار'),
         ('CREDIT', 'بستانکار'),
     )
+    transaction = models.ForeignKey(
+        Transaction,
+        on_delete=models.CASCADE,
+        null=True,  
+        blank=True,
+        verbose_name="معامله"
+    )
     entry_type = models.CharField(
         "نوع گردش",
         max_length=10,
@@ -339,3 +346,4 @@ class CustomerBankAccount(models.Model):
 
     def __str__(self):
         return f"{self.customer} - {self.bank_name}"
+    
