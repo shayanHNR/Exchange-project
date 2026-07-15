@@ -162,19 +162,15 @@ class Receipt(models.Model):
     file = models.FileField(
         'فایل رسید',
         upload_to='receipts/'
-
     )
-
     description = models.TextField(
         'توضیحات',
         blank=True
     )
-
     created_at = models.DateTimeField(
         'تاریخ ثبت',
         auto_now_add=True
     )
-
     class Meta:
         verbose_name = "رسید"
         verbose_name_plural = "رسیدها"
@@ -187,29 +183,24 @@ class Custody(models.Model):
         on_delete=models.CASCADE,
         verbose_name='مشتری'
     )
-
     currency = models.ForeignKey(
         Currency,
         on_delete=models.CASCADE,
         verbose_name='ارز'
     )
-
     amount = models.DecimalField(
         'مقدار',
         max_digits=15,
         decimal_places=2
     )
-
     description = models.TextField(
         'توضیحات',
         blank=True
     )
-
     created_at = models.DateTimeField(
         'تاریخ ثبت',
         auto_now_add=True
     )
-
     class Meta:
         verbose_name = "امانت"
         verbose_name_plural = "امانت‌ها"
@@ -223,12 +214,10 @@ class Wallet(models.Model):
         'توضیحات',
         blank=True
     )
-
     created_at = models.DateTimeField(
         'تاریخ ثبت',
         auto_now_add=True
     )
-
     class Meta:
         verbose_name = "کیف پول"
         verbose_name_plural = "کیف پول‌ها"
@@ -241,20 +230,17 @@ class WalletBalance(models.Model):
         on_delete=models.CASCADE,
         verbose_name='کیف پول'
     )
-
     currency = models.ForeignKey(
         Currency,
         on_delete=models.CASCADE,
         verbose_name='ارز'
     )
-
     amount = models.DecimalField(
         'موجودی',
         max_digits=20,
         decimal_places=2,
         default=0
     )
-
     class Meta:
         verbose_name = "موجودی کیف پول"
         verbose_name_plural = "موجودی کیف پول‌ها"
