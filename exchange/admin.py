@@ -1,7 +1,21 @@
 from django.contrib import admin
 from .models import Customer, Currency, Transaction, Receipt, Custody, Wallet, WalletBalance, AccountLedger, CustomerBankAccount
 
-admin.site.register(Customer)
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'phone',
+        'balance',
+    )
+
+    def balance(self, obj):
+        data = obj.get_balance()
+        return " | ".join(
+            [f"{key}: {value}" for key, value in data.items()]
+        )
+
+    balance.short_description = "مانده حساب"
 admin.site.register(Currency)
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
@@ -28,5 +42,13 @@ class AccountLedgerAdmin(admin.ModelAdmin):
         'amount',
         'entry_type',
         'created_at',
+        'signed_amount',
     )
+    def signed_amount(self, obj):
+        if obj.entry_type == "CREDIT":
+            return obj.amount
+
+        return -obj.amount
+
+    signed_amount.short_description = "مبلغ با علامت"
 admin.site.register(CustomerBankAccount)

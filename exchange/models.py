@@ -23,6 +23,26 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+    def get_balance(self):
+        from django.db.models import Sum
+        from .models import AccountLedger
+
+        balances = {}
+
+        ledgers = AccountLedger.objects.filter(customer=self)
+
+        for ledger in ledgers:
+            key = ledger.currency.code
+
+            if key not in balances:
+                balances[key] = 0
+
+            if ledger.entry_type == "CREDIT":
+                balances[key] += ledger.amount
+            else:
+                balances[key] -= ledger.amount
+
+        return balances
 
 class Currency(models.Model):
     name = models.CharField(
