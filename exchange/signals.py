@@ -34,6 +34,23 @@ def update_wallet_balance(sender, instance, created, **kwargs):
 
         balance.amount += instance.destination_amount
         balance.save()
+    AccountLedger.objects.create(
+        transaction=instance,
+        customer=instance.customer,
+        currency=instance.from_currency,
+        amount=instance.amount,
+        entry_type='CREDIT',
+        description=f'معامله {instance.tracking_number}'
+    )
+
+    AccountLedger.objects.create(
+        transaction=instance,
+        customer=instance.customer,
+        currency=instance.to_currency,
+        amount=instance.destination_amount,
+        entry_type='DEBIT',
+        description=f'معامله {instance.tracking_number}'
+    )
         
 @receiver(post_delete, sender=Transaction)
 def restore_wallet_balance(sender, instance, **kwargs):
@@ -57,20 +74,4 @@ def restore_wallet_balance(sender, instance, **kwargs):
 
         balance.amount -= instance.destination_amount
         balance.save()
-    AccountLedger.objects.create(
-        transaction=instance,
-        customer=instance.customer,
-        currency=instance.from_currency,
-        amount=instance.amount,
-        entry_type='CREDIT',
-        description=f'معامله {instance.tracking_number}'
-    )
-
-    AccountLedger.objects.create(
-        transaction=instance,
-        customer=instance.customer,
-        currency=instance.to_currency,
-        amount=instance.destination_amount,
-        entry_type='DEBIT',
-        description=f'معامله {instance.tracking_number}'
-    )
+  
