@@ -1,8 +1,11 @@
 from django.shortcuts import render
-
-from .models import Customer,Transaction
-
-
+from django.core.paginator import Paginator
+from .models import (Customer,
+                     Transaction,
+                     Wallet,
+                     Currency,
+                     WalletBalance,
+)
 def customer_report(request, customer_id):
     customer = Customer.objects.get(id=customer_id)
 
@@ -29,7 +32,6 @@ def transaction_invoice(request, transaction_id):
             'transaction': transaction,
         }
     )
-from .models import WalletBalance
 
 def wallet_report(request):
     balances = WalletBalance.objects.all().order_by(
@@ -40,5 +42,51 @@ def wallet_report(request):
         'exchange/wallet_report.html',
         {
             'balances': balances,
+        }
+    )
+def dashboard(request):
+
+    customer_count = Customer.objects.count()
+
+    transaction_count = Transaction.objects.count()
+
+    wallet_count = Wallet.objects.count()
+
+    currency_count = Currency.objects.count()
+
+    return render(
+        request,
+        'exchange/dashboard.html',
+        {
+            'customer_count': customer_count,
+            'transaction_count': transaction_count,
+            'wallet_count': wallet_count,
+            'currency_count': currency_count,
+        }
+    )
+def transaction_list(request):
+
+    search = request.GET.get('search')
+
+    transactions = Transaction.objects.all()
+
+    if search:
+        transactions = transactions.filter(
+            customer__name__icontains=search
+        )
+
+    transactions = transactions.order_by(
+        '-created_at'
+    )
+    paginator = Paginator(transactions, 10)
+    page_number = request.GET.get('page')
+    transactions = paginator.get_page(page_number)
+
+    return render(
+        request,
+        'exchange/transaction_list.html',
+        {
+            'transactions': transactions,
+            'search': search,
         }
     )

@@ -29,6 +29,14 @@ urlpatterns = [
     'wallet-report/',
     views.wallet_report
 ),
+    path(
+        'dashboard/',
+        views.dashboard
+),
+    path(
+        'transactions/',
+        views.transaction_list
+    )
 ]
 urlpatterns += static(
     settings.MEDIA_URL,
