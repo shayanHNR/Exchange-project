@@ -8,13 +8,11 @@ class CustomerAdmin(admin.ModelAdmin):
         'phone',
         'balance',
     )
-
     def balance(self, obj):
         data = obj.get_balance()
         return " | ".join(
             [f"{key}: {value}" for key, value in data.items()]
         )
-
     balance.short_description = "مانده حساب"
 admin.site.register(Currency)
 @admin.register(Transaction)

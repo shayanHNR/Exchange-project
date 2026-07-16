@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Customer
+from .models import Customer,Transaction
 
 
 def customer_report(request, customer_id):
@@ -16,5 +16,29 @@ def customer_report(request, customer_id):
             'customer': customer,
             'balance': balance,
             'transactions': transactions,
+        }
+    )
+def transaction_invoice(request, transaction_id):
+    transaction = Transaction.objects.get(
+        id=transaction_id
+    )
+    return render(
+        request,
+        'exchange/transaction_invoice.html',
+        {
+            'transaction': transaction,
+        }
+    )
+from .models import WalletBalance
+
+def wallet_report(request):
+    balances = WalletBalance.objects.all().order_by(
+        'wallet','currency'
+    )
+    return render(
+        request,
+        'exchange/wallet_report.html',
+        {
+            'balances': balances,
         }
     )

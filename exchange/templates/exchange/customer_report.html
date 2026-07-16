@@ -55,6 +55,7 @@
     <th>ارز مقصد</th>
     <th>مبلغ مقصد</th>
     <th>تاریخ</th>
+    <th>فاکتور</th>
 </tr>
 
 
@@ -67,6 +68,14 @@
     <td>{{ transaction.to_currency }}</td>
     <td>{{ transaction.destination_amount }}</td>
     <td>{{ transaction.created_at }}</td>
+    <td>
+        <a
+            href="/transaction/{{ transaction.id }}/invoice/"
+            class="btn btn-sm btn-primary"
+        >
+ مشاهده فاکتور
+    </a>
+</td>
 </tr>
 
 {% endfor %}

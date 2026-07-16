@@ -291,7 +291,7 @@ class AccountLedger(models.Model):
         'تاریخ ثبت',
         auto_now_add=True
     )
-
+    
     class Meta:
         verbose_name = "گردش حساب"
         verbose_name_plural = "گردش حساب‌ها"

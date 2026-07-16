@@ -23,6 +23,12 @@ from exchange import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('customer/<int:customer_id>/report/', views.customer_report),
+    path('transaction/<int:transaction_id>/invoice/',
+     views.transaction_invoice),
+     path(
+    'wallet-report/',
+    views.wallet_report
+),
 ]
 urlpatterns += static(
     settings.MEDIA_URL,
