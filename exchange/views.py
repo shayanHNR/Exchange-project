@@ -90,3 +90,24 @@ def transaction_list(request):
             'search': search,
         }
     )
+def customer_list(request):
+
+    search = request.GET.get('search')
+
+    customers = Customer.objects.all()
+
+    if search:
+        customers = customers.filter(
+            name__icontains=search
+        )
+
+    customers = customers.order_by('name')
+
+    return render(
+        request,
+        'exchange/customer_list.html',
+        {
+            'customers': customers,
+            'search': search,
+        }
+    )

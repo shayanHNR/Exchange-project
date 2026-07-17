@@ -36,7 +36,12 @@ urlpatterns = [
     path(
         'transactions/',
         views.transaction_list
+    ),
+    path(
+        'customers/',
+        views.customer_list
     )
+    
 ]
 urlpatterns += static(
     settings.MEDIA_URL,
