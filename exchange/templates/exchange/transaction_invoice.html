@@ -39,6 +39,19 @@
             {{ transaction.rate }}
         </p>
         <hr>
+
+        <h4>رسید معامله</h4>
+
+            <a
+                href="{{ transaction.receipt.url }}"
+                target="_blank"
+                class="btn btn-success"
+            >
+        مشاهده رسید
+            </a>
+
+    <p>{{ transaction.receipt }}</p>
+        <hr>
         <p>
             <strong>توضیحات:</strong>
             {{ transaction.note }}

@@ -140,6 +140,12 @@ class Transaction(models.Model):
         'توضیحات',
         blank=True
     )
+    receipt = models.FileField(
+        'رسید',
+        upload_to='receipts/',
+        blank=True,
+        null=True
+    )
 
     created_at = models.DateTimeField(
         'تاریخ ثبت',
