@@ -28,11 +28,11 @@ urlpatterns = [
      path(
     'wallet-report/',
     views.wallet_report
-),
+    ),
     path(
         'dashboard/',
         views.dashboard
-),
+    ),
     path(
         'transactions/',
         views.transaction_list
@@ -40,8 +40,11 @@ urlpatterns = [
     path(
         'customers/',
         views.customer_list
-    )
-    
+    ),
+    path(
+        'profit-report/',
+        views.profit_report
+    ),
 ]
 urlpatterns += static(
     settings.MEDIA_URL,

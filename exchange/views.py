@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.db.models import Sum
 from .models import (Customer,
                      Transaction,
                      Wallet,
@@ -109,5 +110,78 @@ def customer_list(request):
         {
             'customers': customers,
             'search': search,
+        }
+    )
+def profit_report(request):
+
+    buy_count = Transaction.objects.filter(
+        transaction_type='BUY'
+    ).count()
+
+    sell_count = Transaction.objects.filter(
+        transaction_type='SELL'
+    ).count()
+
+    exchange_count = Transaction.objects.filter(
+        transaction_type='EXCHANGE'
+    ).count()
+
+    total_buy = Transaction.objects.filter(
+        transaction_type='BUY'
+    ).aggregate(
+        Sum('amount')
+    )['amount__sum'] or 0
+
+    total_sell = Transaction.objects.filter(
+        transaction_type='SELL'
+    ).aggregate(
+        Sum('amount')
+    )['amount__sum'] or 0
+
+    buy_totals = []
+
+    for currency in Currency.objects.all():
+
+        total = Transaction.objects.filter(
+            transaction_type='BUY',
+            from_currency=currency
+        ).aggregate(
+            Sum('amount')
+        )['amount__sum'] or 0
+
+        if total:
+            buy_totals.append(
+                {
+                    'currency': currency.code,
+                    'amount': total,
+                }
+            )
+    sell_totals = []
+    for currency in Currency.objects.all():
+        total = Transaction.objects.filter(
+            transaction_type='SELL',
+            from_currency=currency
+        ).aggregate(
+            Sum('amount')
+        )['amount__sum'] or 0
+
+        if total:
+            sell_totals.append(
+                {
+                    'currency': currency.code,
+                    'amount': total,
+                }
+            )
+    return render(
+        request,
+        'exchange/profit_report.html',
+        {
+            'buy_count': buy_count,
+            'sell_count': sell_count,
+            'exchange_count': exchange_count,
+            'total_buy': total_buy,
+            'total_sell': total_sell,
+            'buy_totals':buy_totals,
+            'sell_totals':sell_totals
         }
     )
