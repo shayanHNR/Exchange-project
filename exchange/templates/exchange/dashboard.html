@@ -50,5 +50,31 @@
         </div>
     </div>
 </div>
+<hr class="mt-4">
+<h3>آخرین نرخ ارزها</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ارز</th>
+            <th>نرخ خرید</th>
+            <th>نرخ فروش</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for rate in latest_rates %}
+        <tr>
+            <td>{{ rate.currency.code }}</td>
+            <td>{{ rate.buy_rate }}</td>
+            <td>{{ rate.sell_rate }}</td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">
+                هنوز نرخی ثبت نشده است.
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>

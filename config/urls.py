@@ -19,34 +19,21 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from exchange import views
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('customer/<int:customer_id>/report/', views.customer_report),
     path('transaction/<int:transaction_id>/invoice/',
      views.transaction_invoice),
-     path(
-    'wallet-report/',
-    views.wallet_report
-    ),
-    path(
-        'dashboard/',
-        views.dashboard
-    ),
-    path(
-        'transactions/',
-        views.transaction_list
-    ),
-    path(
-        'customers/',
-        views.customer_list
-    ),
-    path(
-        'profit-report/',
-        views.profit_report
-    ),
-]
+     path('wallet-report/',
+    views.wallet_report),
+    path('dashboard/',
+        views.dashboard),
+    path('transactions/',
+        views.transaction_list),
+    path('customers/',
+        views.customer_list),
+    path('profit-report/',
+        views.profit_report),]
 urlpatterns += static(
     settings.MEDIA_URL,
-    document_root=settings.MEDIA_ROOT
-)
+    document_root=settings.MEDIA_ROOT)

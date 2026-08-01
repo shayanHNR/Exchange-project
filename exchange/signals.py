@@ -49,29 +49,21 @@ def update_wallet_balance(sender, instance, created, **kwargs):
         currency=instance.to_currency,
         amount=instance.destination_amount,
         entry_type='DEBIT',
-        description=f'معامله {instance.tracking_number}'
-    )
-        
+        description=f'معامله {instance.tracking_number}')
 @receiver(post_delete, sender=Transaction)
 def restore_wallet_balance(sender, instance, **kwargs):
-
     if instance.from_wallet:
         balance, created = WalletBalance.objects.get_or_create(
             wallet=instance.from_wallet,
             currency=instance.from_currency,
-            defaults={'amount': 0}
-        )
-
+            defaults={'amount': 0})
         balance.amount += instance.amount
         balance.save()
-
     if instance.to_wallet:
         balance, created = WalletBalance.objects.get_or_create(
             wallet=instance.to_wallet,
             currency=instance.to_currency,
-            defaults={'amount': 0}
-        )
-
+            defaults={'amount': 0})
         balance.amount -= instance.destination_amount
         balance.save()
   
