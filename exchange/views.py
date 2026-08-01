@@ -36,9 +36,15 @@ def dashboard(request):
     transaction_count = Transaction.objects.count()
     wallet_count = Wallet.objects.count()
     currency_count = Currency.objects.count()
-    latest_rates = ExchangeRate.objects.order_by(
-        '-created_at'
-    )[:5]
+    latest_rates = []
+    for currency in Currency.objects.all():
+        rate = ExchangeRate.objects.filter(
+            currency=currency
+        ).order_by(
+            '-created_at'
+        ).first()
+        if rate:
+            latest_rates.append(rate)
     return render(
         request,
         'exchange/dashboard.html',
