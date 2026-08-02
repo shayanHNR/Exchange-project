@@ -76,5 +76,29 @@
     {% endfor %}
     </tbody>
 </table>
+<hr>
+<h3>موجودی کل ارزهای صرافی</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ارز</th>
+            <th>موجودی</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in currency_balances %}
+        <tr>
+            <td>{{ item.currency__code }}</td>
+            <td>{{ item.total }}</td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="2">
+                موجودی ثبت نشده است.
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>

@@ -45,6 +45,13 @@ def dashboard(request):
         ).first()
         if rate:
             latest_rates.append(rate)
+    currency_balances = WalletBalance.objects.values(
+        'currency__code'
+    ).annotate(
+        total=Sum('amount')
+    ).order_by(
+        'currency__code'
+    )
     return render(
         request,
         'exchange/dashboard.html',
@@ -53,7 +60,8 @@ def dashboard(request):
             'transaction_count': transaction_count,
             'wallet_count': wallet_count,
             'currency_count': currency_count,
-            'latest_rates': latest_rates,})
+            'latest_rates': latest_rates,
+            'currency_balances': currency_balances,})
 def transaction_list(request):
     search = request.GET.get('search')
     transactions = Transaction.objects.all()
