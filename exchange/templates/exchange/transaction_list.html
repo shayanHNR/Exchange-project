@@ -7,18 +7,46 @@
 </head>
 <body class="container mt-4">
 <h2 class="mb-4">لیست معاملات</h2>
-<form method="get" class="mb-3">
-    <input
-        type="text"
-        name="search"
-        value="{{ search }}"
-        class="form-control"
-        placeholder="نام مشتری...">
-    <button
-        type="submit"
-        class="btn btn-primary mt-2">
-        جستجو
-    </button>
+<form method="get" class="mb-4">
+    <div class="row align-items-end">
+        <div class="col-md-4">
+            <label class="form-label">
+                نام مشتری
+            </label>
+            <input
+                type="text"
+                name="search"
+                value="{{ search|default:'' }}"
+                class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">
+                تاریخ شروع
+            </label>
+            <input
+                type="date"
+                name="start_date"
+                value="{{ start_date|default:'' }}"
+                class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">
+                تاریخ پایان
+            </label>
+            <input
+                type="date"
+                name="end_date"
+                value="{{ end_date|default:'' }}"
+                class="form-control">
+        </div>
+        <div class="col-md-2">
+            <button
+                type="submit"
+                class="btn btn-primary w-100">
+                جستجو
+            </button>
+        </div>
+    </div>
 </form>
 <table class="table table-bordered table-striped">
     <thead>

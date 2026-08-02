@@ -64,20 +64,23 @@ def dashboard(request):
             'currency_balances': currency_balances,})
 def transaction_list(request):
     search = request.GET.get('search')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
     transactions = Transaction.objects.all()
     if search:
-        transactions = transactions.filter(
-            customer__name__icontains=search)
-    transactions = transactions.order_by(
-        '-created_at')
-    paginator = Paginator(transactions, 10)
-    page_number = request.GET.get('page')
-    transactions = paginator.get_page(page_number)
+        transactions = transactions.filter(customer__name__icontains=search)
+    if start_date:
+        transactions = transactions.filter(created_at__date__gte=start_date)
+    if end_date:
+        transactions = transactions.filter(created_at__date__lte=end_date)
+    transactions = transactions.order_by('-created_at')
     return render(
         request,
-        'exchange/transaction_list.html',
-        {'transactions': transactions,
-        'search': search,})
+        'exchange/transaction_list.html',{
+            'transactions': transactions,
+            'search': search,
+            'start_date': start_date,
+            'end_date': end_date,})
 def customer_list(request):
     search = request.GET.get('search')
     customers = Customer.objects.all()
